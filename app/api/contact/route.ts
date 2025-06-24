@@ -3,6 +3,8 @@ import nodemailer from "nodemailer";
 
 export const dynamic = "force-dynamic";
 
+console.log("✅ route.ts loaded");
+
 export async function POST(req: Request) {
   console.log("📩 New form submission received!");
 
@@ -16,14 +18,16 @@ export async function POST(req: Request) {
     }
 
     const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS,
-  },
-});
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    console.log("📨 Sending email...");
 
     await transporter.sendMail({
       from: `"TcorpsHub Contact" <${process.env.GMAIL_USER}>`,
