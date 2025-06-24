@@ -1,66 +1,86 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function ContactForm() {
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", message: "" });
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // send form data here
-    console.log(form);
+    setSubmitting(true);
+
+    const name = `${firstName} ${lastName}`;
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("✅ Your message has been sent successfully!");
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        alert("❌ Failed to send message. " + (data.error || "Please try again later."));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("❌ An error occurred while sending your message.");
+    }
+
+    setSubmitting(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6 text-white">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl mx-auto text-white">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
-          name="firstName"
           placeholder="First Name"
-          value={form.firstName}
-          onChange={handleChange}
-          className="w-full px-4 py-2 bg-black border border-gray-600 rounded"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          className="px-4 py-2 rounded-md bg-black border border-gray-600"
+          required
         />
         <input
           type="text"
-          name="lastName"
           placeholder="Last Name"
-          value={form.lastName}
-          onChange={handleChange}
-          className="w-full px-4 py-2 bg-black border border-gray-600 rounded"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          className="px-4 py-2 rounded-md bg-black border border-gray-600"
+          required
         />
       </div>
       <input
         type="email"
-        name="email"
-        placeholder="Email *"
+        placeholder="Your Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full px-4 py-2 rounded-md bg-black border border-gray-600"
         required
-        value={form.email}
-        onChange={handleChange}
-        className="w-full px-4 py-2 bg-black border border-gray-600 rounded"
       />
       <textarea
-        name="message"
-        placeholder="Your Message *"
+        placeholder="Your Message"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        rows={6}
+        className="w-full px-4 py-2 rounded-md bg-black border border-gray-600"
         required
-        value={form.message}
-        onChange={handleChange}
-        className="w-full px-4 py-2 h-32 bg-black border border-gray-600 rounded resize-none"
       />
-      <div className="pt-4 flex justify-center">
-      <div className="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY" />
-      </div>
-      <button
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
-      >
-        Submit Form
-      </button>
+      <Button type="submit" disabled={submitting} className="w-full bg-blue-600 hover:bg-blue-700">
+        {submitting ? "Sending..." : "Submit"}
+      </Button>
     </form>
   );
 }
