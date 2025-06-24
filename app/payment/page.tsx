@@ -16,15 +16,37 @@ function CheckoutForm({ amount }: { amount: number }) {
   const elements = useElements();
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!stripe || !elements) return;
+  event.preventDefault();
+  if (!stripe || !elements) return;
 
-    const card = elements.getElement(CardElement);
-    if (!card) return;
+  const card = elements.getElement(CardElement);
+  if (!card) return;
 
-    console.log("Payment amount:", amount);
-    alert("This is a mock payment – integration not complete");
-  };
+  try {
+    const res = await fetch("/api/create-payment-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount }),
+    });
+
+    const data = await res.json();
+
+    const result = await stripe.confirmCardPayment(data.clientSecret, {
+      payment_method: {
+        card,
+      },
+    });
+
+    if (result.error) {
+      alert(`Payment failed: ${result.error.message}`);
+    } else if (result.paymentIntent?.status === "succeeded") {
+      alert("✅ Payment successful!");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("An error occurred while processing the payment.");
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
