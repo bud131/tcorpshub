@@ -74,3 +74,4 @@ const navLinks = [
   { href: '/affiliates', label: 'Affiliates' },
   { href: '/payment', label: 'Secure Payment' },
 ];
+
