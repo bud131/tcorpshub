@@ -4,83 +4,70 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function ContactForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-
-    const name = `${firstName} ${lastName}`;
+    setStatus("Sending...");
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
-
       if (data.success) {
-        alert("✅ Your message has been sent successfully!");
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setMessage("");
+        setStatus("✅ Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" });
       } else {
-        alert("❌ Failed to send message. " + (data.error || "Please try again later."));
+        setStatus("❌ Failed to send message.");
       }
     } catch (err) {
       console.error(err);
-      alert("❌ An error occurred while sending your message.");
+      setStatus("❌ An error occurred.");
     }
-
-    setSubmitting(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl mx-auto text-white">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          className="px-4 py-2 rounded-md bg-black border border-gray-600"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          className="px-4 py-2 rounded-md bg-black border border-gray-600"
-          required
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-xl mx-auto">
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Your Name"
+        required
+        className="w-full p-3 rounded bg-black text-white border border-gray-600"
+      />
       <input
         type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
         placeholder="Your Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full px-4 py-2 rounded-md bg-black border border-gray-600"
         required
+        className="w-full p-3 rounded bg-black text-white border border-gray-600"
       />
       <textarea
+        name="message"
+        value={formData.message}
+        onChange={handleChange}
         placeholder="Your Message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        rows={6}
-        className="w-full px-4 py-2 rounded-md bg-black border border-gray-600"
         required
+        rows={6}
+        className="w-full p-3 rounded bg-black text-white border border-gray-600"
       />
-      <Button type="submit" disabled={submitting} className="w-full bg-blue-600 hover:bg-blue-700">
-        {submitting ? "Sending..." : "Submit"}
+      <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+        Send Message
       </Button>
+      {status && <p className="text-sm text-center mt-2">{status}</p>}
     </form>
   );
 }
