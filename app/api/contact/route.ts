@@ -2,21 +2,25 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
-  const { name, email, message } = await req.json();
-
-  if (!name || !email || !message) {
-    return NextResponse.json({ success: false, error: "Missing fields" }, { status: 400 });
-  }
-
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS,
-    },
-  });
+  console.log("📩 New form submission received!");
 
   try {
+    const { name, email, message } = await req.json();
+    console.log("🧾 Form Data:", { name, email, message });
+
+    if (!name || !email || !message) {
+      console.warn("❗ Missing fields in submission");
+      return NextResponse.json({ success: false, error: "Missing fields" }, { status: 400 });
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
     await transporter.sendMail({
       from: `"TcorpsHub Contact" <${process.env.GMAIL_USER}>`,
       to: "tcorps.eu@gmail.com",
@@ -29,9 +33,10 @@ export async function POST(req: Request) {
       `,
     });
 
+    console.log("✅ Email sent successfully.");
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("Email sending error:", err);
+    console.error("❌ Email sending error:", err);
     return NextResponse.json({ success: false, error: "Failed to send email" }, { status: 500 });
   }
 }
