@@ -4,7 +4,7 @@ import { Resend } from "resend";
 export const dynamic = "force-dynamic";
 
 const resend = new Resend("re_aiFZnMUG_2uyZcoBx66FXQKC7Qti5ivBn");
-const RECAPTCHA_SECRET = "6LfIuAUrAAAAANK5tx7x05DPqr-C92BuMKk7MkPn";
+const RECAPTCHA_SECRET = "6LfsjGwrAAAAAJCiAg61vsZFbtZwwlcFhx5vnl-V";
 
 export async function POST(req: Request) {
   console.log("📩 New form submission received!");
