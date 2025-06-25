@@ -1,5 +1,5 @@
 "use client";
-
+declare const grecaptcha: any;
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
