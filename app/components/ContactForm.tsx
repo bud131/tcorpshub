@@ -1,6 +1,8 @@
 "use client";
 declare const grecaptcha: any;
+
 import { useState } from "react";
+import Script from "next/script";
 import { Button } from "@/components/ui/button";
 
 export default function ContactForm() {
@@ -16,7 +18,9 @@ export default function ContactForm() {
     setStatus("Sending...");
 
     try {
-      const token = await grecaptcha.execute("6LfIuAUrAAAAAH1bMnYN7tuYogCIpZvcgo_ZpKkK", { action: "submit" });
+      const token = await grecaptcha.execute("6LfIuAUrAAAAAH1bMnYN7tuYogCIpZvcgo_ZpKkK", {
+        action: "submit",
+      });
 
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -39,7 +43,12 @@ export default function ContactForm() {
 
   return (
     <>
-      <script src="https://www.google.com/recaptcha/api.js?render=6LfIuAUrAAAAAH1bMnYN7tuYogCIpZvcgo_ZpKkK" />
+      <Script
+        src="https://www.google.com/recaptcha/api.js?render=6LfIuAUrAAAAAH1bMnYN7tuYogCIpZvcgo_ZpKkK"
+        strategy="afterInteractive"
+        async
+        defer
+      />
       <form onSubmit={handleSubmit} className="space-y-6 max-w-xl mx-auto">
         <input
           type="text"
