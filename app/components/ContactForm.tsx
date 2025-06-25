@@ -18,7 +18,7 @@ export default function ContactForm() {
     setStatus("Sending...");
 
     try {
-      const token = await grecaptcha.execute("6LfIuAUrAAAAAH1bMnYN7tuYogCIpZvcgo_ZpKkK", {
+      const token = await grecaptcha.execute("6LfsjGwrAAAAAJCiAg61vsZFbtZwwlcFhx5vnl-V", {
         action: "submit",
       });
 
@@ -44,7 +44,7 @@ export default function ContactForm() {
   return (
     <>
       <Script
-        src="https://www.google.com/recaptcha/api.js?render=6LfIuAUrAAAAAH1bMnYN7tuYogCIpZvcgo_ZpKkK"
+        src="https://www.google.com/recaptcha/api.js?render=6LfsjGwrAAAAAJCiAg61vsZFbtZwwlcFhx5vnl-V"
         strategy="afterInteractive"
         async
         defer
