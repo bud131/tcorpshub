@@ -10,27 +10,33 @@ export async function POST(req: Request) {
   console.log("📩 New form submission received!");
 
   try {
-    const { name, email, message, token } = await req.json();
-    console.log("🧾 Form Data:", { name, email, message });
+    const body = await req.json();
+    const { name, email, message, token } = body;
+
+    console.log("🧾 Parsed body:", body);
 
     if (!name || !email || !message || !token) {
+      console.warn("⚠️ Missing one or more required fields.");
       return NextResponse.json({ success: false, error: "Missing fields" }, { status: 400 });
     }
 
-    // 🛡️ Verify reCAPTCHA token
-    const verifyRes = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+    console.log("🔐 Verifying reCAPTCHA token:", token);
+
+    const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `secret=${RECAPTCHA_SECRET}&response=${token}`,
     });
 
     const verifyData = await verifyRes.json();
-    console.log("🔍 reCAPTCHA score:", verifyData);
+    console.log("✅ reCAPTCHA verification result:", verifyData);
 
     if (!verifyData.success || verifyData.score < 0.5) {
+      console.warn("❌ reCAPTCHA check failed or low score:", verifyData.score);
       return NextResponse.json({ success: false, error: "reCAPTCHA failed" }, { status: 403 });
     }
 
+    console.log("📨 Sending email via Resend...");
     await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "tcorps.eu@gmail.com",
@@ -43,10 +49,10 @@ export async function POST(req: Request) {
       `,
     });
 
-    console.log("✅ Email sent via Resend.");
+    console.log("✅ Email successfully sent.");
     return NextResponse.json({ success: true });
   } catch (err: any) {
     console.error("❌ Server error:", err);
-    return NextResponse.json({ success: false, error: err.message || "Failed" }, { status: 500 });
+    return NextResponse.json({ success: false, error: err.message || "Unknown error" }, { status: 500 });
   }
 }
