@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
     console.log("📨 Sending email via Resend...");
     await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "Tcorps <noreply@tcorpshub.com>",
       to: "tcorps.eu@gmail.com",
       replyTo: email,
       subject: "New Contact Form Submission",
