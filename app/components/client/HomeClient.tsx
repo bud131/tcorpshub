@@ -19,7 +19,7 @@ const phrases = [
   "NEED A DISCORD ADMIN / MODERATOR?",
 ];
 
-export default function HomeClient() {
+export default function Home() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -33,7 +33,11 @@ export default function HomeClient() {
     <>
       <Background />
       <Header />
-      <Script src="https://www.google.com/recaptcha/api.js" async defer />
+      <Script
+        src="https://www.google.com/recaptcha/api.js"
+        async
+        defer
+      />
 
       <main className="text-white min-h-screen px-4 py-12">
         {/* Hero Section */}
@@ -73,7 +77,8 @@ export default function HomeClient() {
             Who We Are
           </h2>
           <p className="text-lg sm:text-xl leading-relaxed tracking-wide text-gray-300">
-            At <span className="font-semibold text-blue-400">TCorpsHub.com</span>, I specialize in designing high-quality websites, whitepapers, branding, and security solutions for NFT and crypto projects. Everything is built with modern tools like <span className="text-blue-400 font-semibold">Next.js</span>, <span className="text-blue-400 font-semibold">Node.js</span>, <span className="text-blue-400 font-semibold">Tailwind</span>, and <span className="text-blue-400 font-semibold">Shadcn UI</span> — fast, clean, and optimized.
+            At <span className="font-semibold text-blue-400">TCorpsHub.com</span>, I specialize in designing high-quality websites,
+            whitepapers, branding, and security solutions for NFT and crypto projects. Everything is built with modern tools like <span className="text-blue-400 font-semibold">Next.js</span>, <span className="text-blue-400 font-semibold">Node.js</span>, <span className="text-blue-400 font-semibold">Tailwind</span>, and <span className="text-blue-400 font-semibold">Shadcn UI</span> — fast, clean, and optimized.
           </p>
           <p className="text-lg sm:text-xl leading-relaxed tracking-wide text-gray-300">
             I only take on a limited number of clients to ensure each project gets my full attention. Expect direct communication, transparency, and a rapid turnaround — typically within <span className="font-bold text-blue-400">1–2 days</span>.
@@ -88,11 +93,11 @@ export default function HomeClient() {
           className="mt-16 text-center"
         >
           <Button asChild className="text-white bg-blue-600 hover:bg-blue-700">
-            <a href="/contact">
-              <Rocket className="mr-2 h-4 w-4" />
-              Launch Your Project
-            </a>
-          </Button>
+  <a href="/contact">
+    <Rocket className="mr-2 h-4 w-4" />
+    Launch Your Project
+  </a>
+</Button>
         </motion.div>
 
         {/* Our Services Section */}
