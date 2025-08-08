@@ -1,16 +1,3 @@
-export const metadata = {
-  title: "TCorps Hub | Web3 Development & Strategy",
-  description: "TCorps Hub is your trusted partner for Web3 development, branding, and crypto solutions. From websites to smart contracts – we build your Web3 vision.",
-  openGraph: {
-    title: "TCorps Hub | Web3 Development & Strategy",
-    description: "We build Web3 experiences – websites, whitepapers, tokens, Discords & more.",
-    url: "https://tcorpshub.com",
-    siteName: "TCorps Hub",
-    locale: "en_US",
-    type: "website",
-  },
-};
-
 "use client";
 
 import { useEffect, useState } from "react";

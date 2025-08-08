@@ -1,16 +1,3 @@
-export const metadata = {
-  title: "Payments | TCorps Hub",
-  description: "Securely pay for Web3 services via Stripe or cryptocurrency. TCorps Hub accepts payments in USD and popular blockchain networks.",
-  openGraph: {
-    title: "Payments | TCorps Hub",
-    description: "Choose crypto or card payments to launch your Web3 project today.",
-    url: "https://tcorpshub.com/payment",
-    siteName: "TCorps Hub",
-    locale: "en_US",
-    type: "website",
-  },
-};
-
 "use client";
 
 import { useState } from "react";

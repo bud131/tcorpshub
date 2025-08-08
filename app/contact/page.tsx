@@ -1,17 +1,3 @@
-// app/contact/page.tsx
-export const metadata = {
-  title: "Contact | TCorps Hub",
-  description: "Get in touch with TCorps Hub to discuss your Web3 development needs. We’re ready to support your project from idea to execution.",
-  openGraph: {
-    title: "Contact | TCorps Hub",
-    description: "Reach out to TCorps Hub for custom Web3 development and crypto project support.",
-    url: "https://tcorpshub.com/contact",
-    siteName: "TCorps Hub",
-    locale: "en_US",
-    type: "website",
-  },
-};
-
 "use client";
 
 import Header from "../components/Header";
