@@ -85,20 +85,10 @@ export default function Home() {
           </p>
         </motion.section>
 
-        {/* CTA Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mt-16 text-center"
-        >
-          <Button asChild className="text-white bg-blue-600 hover:bg-blue-700">
-  <a href="/contact">
-    <Rocket className="mr-2 h-4 w-4" />
-    Launch Your Project
-  </a>
-</Button>
-        </motion.div>
+
+
+
+
 
         {/* Our Services Section */}
         <motion.section
