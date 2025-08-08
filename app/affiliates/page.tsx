@@ -1,3 +1,16 @@
+export const metadata = {
+  title: "Affiliates | TCorps Hub",
+  description: "Partner with TCorps Hub and earn by referring clients to our Web3 services. Discover our affiliate program and start earning today.",
+  openGraph: {
+    title: "Affiliates | TCorps Hub",
+    description: "Join the TCorps affiliate program and help grow the Web3 ecosystem.",
+    url: "https://tcorpshub.com/affiliates",
+    siteName: "TCorps Hub",
+    locale: "en_US",
+    type: "website",
+  },
+};
+
 "use client";
 
 import Header from "../components/Header";

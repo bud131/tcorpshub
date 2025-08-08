@@ -1,3 +1,16 @@
+export const metadata = {
+  title: "Projects & Collaborations | TCorps Hub",
+  description: "Explore Web3 projects developed by TCorps Hub. From NFTs to smart contract platforms – discover our portfolio and collaborations.",
+  openGraph: {
+    title: "Projects | TCorps Hub",
+    description: "See what we’ve built. Browse our Web3 development portfolio and ongoing collaborations.",
+    url: "https://tcorpshub.com/projects",
+    siteName: "TCorps Hub",
+    locale: "en_US",
+    type: "website",
+  },
+};
+
 "use client";
 
 import Header from "../components/Header";
