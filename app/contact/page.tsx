@@ -1,25 +1,22 @@
-"use client";
+export const metadata = {
+  title: "Contact | TCorps Hub – Web3 Development & Strategy",
+  description: "Reach out to TCorps Hub for tailored Web3 development, branding, whitepapers, and crypto solutions. Let's build your vision.",
+  keywords: [
+    "TCorps Hub", "Contact", "Web3 development", "crypto branding", "NFT websites", "smart contracts", "whitepapers", "blockchain strategy"
+  ],
+  robots: "index, follow",
+  openGraph: {
+    title: "Contact | TCorps Hub – Web3 Development & Strategy",
+    description: "Let’s work together on your Web3 project – from websites and whitepapers to branding and moderation.",
+    url: "https://tcorpshub.com/contact",
+    siteName: "TCorps Hub",
+    locale: "en_US",
+    type: "website",
+  },
+};
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Background from "../components/Background";
-import ContactForm from "../components/ContactForm";
+import ContactClient from "@/components/client/ContactClient";
 
 export default function ContactPage() {
-  return (
-    <>
-      <Background />
-      <Header />
-      <main className="min-h-screen px-4 py-12 text-white">
-        <h1 className="text-3xl font-bold text-center mb-8 underline decoration-blue-600 decoration-4 underline-offset-4">
-          Contact Us
-        </h1>
-        <ContactForm />
-        <div className="flex justify-center mt-8">
-          <img src="/tg.png" alt="Telegram" className="w-[200px] h-[256px] mx-auto" />
-        </div>
-      </main>
-      <Footer />
-    </>
-  );
+  return <ContactClient />;
 }
