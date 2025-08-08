@@ -42,7 +42,7 @@ export default function Home() {
       <main className="text-white min-h-screen px-4 py-12">
         {/* Hero Section */}
         <section className="max-w-4xl mx-auto space-y-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-center whitespace-nowrap">
+          <h1 className="text-3xl sm:text-4xl font-bold text-center">
             TCorps Hub – Your Trusted Partner for Web3 Solutions
           </h1>
 

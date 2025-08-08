@@ -47,6 +47,20 @@ export default function Footer() {
           </a>
         ))}
       </div>
+	  <div className="mt-10 text-center text-sm text-gray-400 px-4">
+  © TCorps Hub – All rights reserved – Web3 development & design by{" "}
+  <a
+    href="https://tcorpshub.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-blue-400 hover:underline"
+  >
+    TCorps Hub
+  </a>{" "}
+  | Built with React & Next.js
+</div>
+
+
     </footer>
   );
 }
