@@ -2,7 +2,7 @@
 import "./globals.css";
 import Script from "next/script";
 import type { Metadata, Viewport } from "next";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import RecaptchaScript from "@/components/RecaptchaScript";
 
 export const metadata: Metadata = {
