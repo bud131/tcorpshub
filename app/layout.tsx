@@ -2,13 +2,13 @@
 import "./globals.css";
 import Script from "next/script";
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tcorpshub.com"),
   title: { default: "Tcorps Hub", template: "%s | Tcorps Hub" },
   description:
     "Harry’s web development portfolio: Next.js/React projects, collaborations, and Web3 work.",
-  applicationName: "Tcorps Hub",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Tcorps Hub",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
       "Next.js/React portfolio and collaborations by Harry. View projects and get in touch.",
     images: ["/og-image.jpg"],
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  robots: { index: true, follow: true },
   icons: { icon: "/favicon.ico", apple: "/apple-touch-icon.png" },
 };
 
@@ -43,6 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
 
+        {/* Vercel Web Analytics */}
+        <Analytics />
+
         {/* Google Analytics */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
@@ -57,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
 
-        {/* Organization JSON-LD */}
+        {/* JSON-LD (Person) */}
         <Script id="org-schema" type="application/ld+json" strategy="afterInteractive">
           {JSON.stringify({
             "@context": "https://schema.org",
