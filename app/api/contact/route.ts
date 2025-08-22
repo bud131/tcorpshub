@@ -2,24 +2,23 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-const json = (status: number, body: any) => NextResponse.json(body, { status });
+const ok = (b:any)=>NextResponse.json(b,{status:200});
+const bad=(s:number,b:any)=>NextResponse.json(b,{status:s});
 
 export async function POST(req: Request) {
   try {
-    const { name, email, message, token, action } = await req.json();
+    const { name, email, message, token } = await req.json();
+    if (!name || !email || !message) return bad(400,{ok:false,error:"Missing fields"});
 
-    if (!name || !email || !message) return json(400, { ok: false, error: "Missing fields" });
-
-    // reCAPTCHA verify
+    // reCAPTCHA
     const secret = process.env.RECAPTCHA_SECRET_KEY!;
-    const verify = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret, response: token }),
-    }).then(r => r.json());
-
-    if (!verify?.success || (typeof verify.score === "number" && verify.score < 0.5))
-      return json(400, { ok: false, error: "reCAPTCHA failed", details: verify });
+    const vr = await fetch("https://www.google.com/recaptcha/api/siteverify",{
+      method:"POST",
+      headers:{ "Content-Type":"application/x-www-form-urlencoded" },
+      body:new URLSearchParams({ secret, response: token }),
+    }).then(r=>r.json());
+    if (!vr?.success || (typeof vr.score==="number" && vr.score<0.5))
+      return bad(400,{ok:false,error:"reCAPTCHA failed",details:vr});
 
     // SMTP (Hostinger 465/SSL)
     const transporter = nodemailer.createTransport({
@@ -27,24 +26,33 @@ export async function POST(req: Request) {
       port: Number(process.env.SMTP_PORT || 465),
       secure: true,
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      logger: true, // <-- γράφει αναλυτικά στα Function logs
     });
 
-    await transporter.sendMail({
-      from: `"Tcorps Hub" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_TO || process.env.SMTP_USER,
+    await transporter.verify().then(()=>console.log("SMTP ready"));
+
+    const info = await transporter.sendMail({
+      from: process.env.SMTP_USER,                // ίδια με auth user
+      sender: process.env.SMTP_USER,
+      to: process.env.CONTACT_TO,                 // κύριος παραλήπτης
+      bcc: process.env.SMTP_USER,                 // για να βλέπεις αν έφυγε
       replyTo: email,
-      subject: `New contact (${action || "contact"}) from ${name}`,
+      subject: `New contact from ${name}`,
       text: message,
-      html: `<div style="font-family:Arial,sans-serif;line-height:1.6">
-               <p><strong>Name:</strong> ${name}</p>
-               <p><strong>Email:</strong> ${email}</p>
-               <p><strong>Message:</strong><br/>${String(message).replace(/\n/g, "<br/>")}</p>
-             </div>`,
+      html: `<p><b>Name:</b> ${name}</p><p><b>Email:</b> ${email}</p><p>${message.replace(/\n/g,"<br/>")}</p>`,
+      headers: { "List-Unsubscribe": `<mailto:${process.env.SMTP_USER}>` },
     });
 
-    return json(200, { ok: true });
-  } catch (e: any) {
+    console.log("MAIL result:", {
+      messageId: info.messageId,
+      accepted: info.accepted,
+      rejected: info.rejected,
+      response: info.response,
+    });
+
+    return ok({ ok: true, id: info.messageId, accepted: info.accepted, rejected: info.rejected });
+  } catch (e:any) {
     console.error("CONTACT API error:", e?.message || e);
-    return json(500, { ok: false, error: "Server error" });
+    return bad(500,{ ok:false, error:"Server error" });
   }
 }
