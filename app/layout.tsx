@@ -3,6 +3,7 @@ import "./globals.css";
 import Script from "next/script";
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import RecaptchaScript from "@/components/RecaptchaScript";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tcorpshub.com"),
@@ -43,6 +44,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
 
+        {/* reCAPTCHA v3 */}
+        <RecaptchaScript />
+
         {/* Vercel Web Analytics */}
         <Analytics />
 
@@ -60,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
 
-        {/* JSON-LD (Person) */}
+        {/* JSON-LD (Person Schema) */}
         <Script id="org-schema" type="application/ld+json" strategy="afterInteractive">
           {JSON.stringify({
             "@context": "https://schema.org",

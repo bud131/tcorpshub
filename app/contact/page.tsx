@@ -1,21 +1,22 @@
-export const metadata = {
-  title: "Contact | TCorps Hub – Web3 Development & Strategy",
-  description: "Reach out to TCorps Hub for tailored Web3 development, branding, whitepapers, and crypto solutions. Let's build your vision.",
-  keywords: [
-    "TCorps Hub", "Contact", "Web3 development", "crypto branding", "NFT websites", "smart contracts", "whitepapers", "blockchain strategy"
-  ],
-  robots: "index, follow",
+// app/contact/page.tsx
+import type { Metadata } from "next";
+import ContactClient from "@/components/client/ContactClient";
+
+export const metadata: Metadata = {
+  title: "Contact | Tcorps Hub",
+  description:
+    "Reach out to Tcorps Hub for Next.js/React & Web3 collaborations. Let’s build your vision.",
   openGraph: {
-    title: "Contact | TCorps Hub – Web3 Development & Strategy",
-    description: "Let’s work together on your Web3 project – from websites and whitepapers to branding and moderation.",
+    title: "Contact | Tcorps Hub",
+    description:
+      "Get in touch for web development, Web3 work, and collaborations.",
     url: "https://tcorpshub.com/contact",
-    siteName: "TCorps Hub",
+    siteName: "Tcorps Hub",
     locale: "en_US",
     type: "website",
   },
+  robots: { index: true, follow: true },
 };
-
-import ContactClient from "@/components/client/ContactClient";
 
 export default function ContactPage() {
   return <ContactClient />;

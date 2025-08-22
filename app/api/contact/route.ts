@@ -1,58 +1,47 @@
+// app/api/contact/route.ts
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
-
-export const dynamic = "force-dynamic";
-
-const resend = new Resend("re_aiFZnMUG_2uyZcoBx66FXQKC7Qti5ivBn");
-const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET!;
+import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
-  console.log("📩 New form submission received!");
-
   try {
-    const body = await req.json();
-    const { name, email, message, token } = body;
+    const { name, email, message } = await req.json();
 
-    console.log("🧾 Parsed body:", body);
-
-    if (!name || !email || !message || !token) {
-      console.warn("⚠️ Missing one or more required fields.");
-      return NextResponse.json({ success: false, error: "Missing fields" }, { status: 400 });
+    if (!name || !email || !message) {
+      return NextResponse.json({ ok: false, error: "Missing fields" }, { status: 400 });
     }
 
-    console.log("🔐 Verifying reCAPTCHA token:", token);
-
-    const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `secret=${RECAPTCHA_SECRET}&response=${token}`,
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || "smtp.hostinger.com",
+      port: Number(process.env.SMTP_PORT || 465),
+      secure: true, // 465 -> SSL
+      auth: {
+        user: process.env.SMTP_USER, // info@tcorpshub.com
+        pass: process.env.SMTP_PASS, // Hostinger email password
+      },
     });
 
-    const verifyData = await verifyRes.json();
-    console.log("✅ reCAPTCHA verification result:", verifyData);
+    const to = process.env.CONTACT_TO || process.env.SMTP_USER; // π.χ. ίδιο το info@tcorpshub.com
+    const from = `"Tcorps Hub" <${process.env.SMTP_USER}>`;
 
-    if (!verifyData.success || verifyData.score < 0.5) {
-      console.warn("❌ reCAPTCHA check failed or low score:", verifyData.score);
-      return NextResponse.json({ success: false, error: "reCAPTCHA failed" }, { status: 403 });
-    }
-
-    console.log("📨 Sending email via Resend...");
-    await resend.emails.send({
-      from: "Tcorps <noreply@tcorpshub.com>",
-      to: "tcorps.eu@gmail.com",
+    await transporter.sendMail({
+      from,
+      to,
+      subject: `New contact from ${name} (${email})`,
       replyTo: email,
-      subject: "New Contact Form Submission",
+      text: message,
       html: `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong><br>${message}</p>
+        <div style="font-family:Arial,sans-serif;line-height:1.6">
+          <h2>New Contact Message</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Message:</strong><br/>${message.replace(/\n/g, "<br/>")}</p>
+        </div>
       `,
     });
 
-    console.log("✅ Email successfully sent.");
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ ok: true });
   } catch (err: any) {
-    console.error("❌ Server error:", err);
-    return NextResponse.json({ success: false, error: err.message || "Unknown error" }, { status: 500 });
+    console.error("Contact send error:", err);
+    return NextResponse.json({ ok: false, error: "Send failed" }, { status: 500 });
   }
 }
