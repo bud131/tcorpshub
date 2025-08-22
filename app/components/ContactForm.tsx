@@ -1,5 +1,6 @@
 // app/components/ContactForm.tsx
 "use client";
+import { ensureRecaptchaReady } from "@/lib/recaptcha";
 
 import { useState } from "react";
 
@@ -9,35 +10,32 @@ export default function ContactForm() {
   const [status, setStatus] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus(null);
-    setLoading(true);
+  e.preventDefault();
+  setStatus(null);
+  setLoading(true);
 
-    try {
-      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!;
-      // περίμενε αν δεν έχει φορτώσει ακόμα
-      if (!(window as any).grecaptcha?.execute) {
-        await new Promise((res) => setTimeout(res, 300));
-      }
-      const recaptchaToken = await (window as any).grecaptcha.execute(siteKey, { action: "contact" });
+  try {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!;
+    await ensureRecaptchaReady();                     // περιμένει το API
+    const recaptchaToken = await (window as any).grecaptcha
+      .execute(siteKey, { action: "contact" });
 
-      const r = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, recaptchaToken, action: "contact" }),
-      });
-      const data = await r.json();
-      if (!r.ok || !data.ok) throw new Error(data?.error || "Send failed");
+    const r = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...form, recaptchaToken, action: "contact" }),
+    });
+    const data = await r.json();
+    if (!r.ok || !data.ok) throw new Error(data?.error || "Send failed");
 
-      setStatus("Message sent ✅");
-      setForm({ name: "", email: "", message: "" });
-    } catch (err: any) {
-      setStatus(`Failed to send: ${err.message || err}`);
-    } finally {
-      setLoading(false);
-    }
+    setStatus("Message sent ✅");
+    setForm({ name: "", email: "", message: "" });
+  } catch (err: any) {
+    setStatus(`Failed to send: ${err.message || err}`);
+  } finally {
+    setLoading(false);
   }
-
+}
   return (
     <form onSubmit={onSubmit} className="max-w-xl mx-auto space-y-4">
       <input
