@@ -1,30 +1,27 @@
+// app/api/contact/route.ts
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-function json(status: number, body: any) { return NextResponse.json(body, { status }); }
+const json = (status: number, body: any) => NextResponse.json(body, { status });
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { name, email, message, company } = body;
-    const recaptcha = body.token || body.recaptchaToken;
+    const { name, email, message, token, action } = await req.json();
 
-    if (company) return json(200, { ok: true }); // honeypot: κάνε silent success
     if (!name || !email || !message) return json(400, { ok: false, error: "Missing fields" });
-    if (!recaptcha) return json(400, { ok: false, error: "Missing reCAPTCHA token" });
 
     // reCAPTCHA verify
     const secret = process.env.RECAPTCHA_SECRET_KEY!;
     const verify = await fetch("https://www.google.com/recaptcha/api/siteverify", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret, response: recaptcha }),
+      body: new URLSearchParams({ secret, response: token }),
     }).then(r => r.json());
 
     if (!verify?.success || (typeof verify.score === "number" && verify.score < 0.5))
       return json(400, { ok: false, error: "reCAPTCHA failed", details: verify });
 
-    // SMTP (Hostinger 465 SSL)
+    // SMTP (Hostinger 465/SSL)
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "smtp.hostinger.com",
       port: Number(process.env.SMTP_PORT || 465),
@@ -36,11 +33,13 @@ export async function POST(req: Request) {
       from: `"Tcorps Hub" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_TO || process.env.SMTP_USER,
       replyTo: email,
-      subject: `New contact from ${name}`,
+      subject: `New contact (${action || "contact"}) from ${name}`,
       text: message,
-      html: `<p><strong>Name:</strong> ${name}</p>
-             <p><strong>Email:</strong> ${email}</p>
-             <p><strong>Message:</strong><br/>${String(message).replace(/\n/g,"<br/>")}</p>`,
+      html: `<div style="font-family:Arial,sans-serif;line-height:1.6">
+               <p><strong>Name:</strong> ${name}</p>
+               <p><strong>Email:</strong> ${email}</p>
+               <p><strong>Message:</strong><br/>${String(message).replace(/\n/g, "<br/>")}</p>
+             </div>`,
     });
 
     return json(200, { ok: true });
