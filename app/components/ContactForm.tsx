@@ -1,87 +1,71 @@
+// app/components/ContactForm.tsx
 "use client";
-declare const grecaptcha: any;
 
 import { useState } from "react";
-import Script from "next/script";
-import { Button } from "@/components/ui/button";
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState("");
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setStatus("Sending...");
+    setStatus(null);
+    setLoading(true);
 
     try {
-      const token = await grecaptcha.execute("6LfsjGwrAAAAAJCiAg61vsZFbtZwwlcFhx5vnl-V", {
-        action: "submit",
-      });
+      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!;
+      // περίμενε αν δεν έχει φορτώσει ακόμα
+      if (!(window as any).grecaptcha?.execute) {
+        await new Promise((res) => setTimeout(res, 300));
+      }
+      const recaptchaToken = await (window as any).grecaptcha.execute(siteKey, { action: "contact" });
 
-      const res = await fetch("/api/contact", {
+      const r = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, token }),
+        body: JSON.stringify({ ...form, recaptchaToken, action: "contact" }),
       });
+      const data = await r.json();
+      if (!r.ok || !data.ok) throw new Error(data?.error || "Send failed");
 
-      const data = await res.json();
-      if (data.success) {
-        setStatus("✅ Message sent successfully!");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus("❌ Failed to send message.");
-      }
-    } catch (err) {
-      console.error(err);
-      setStatus("❌ An error occurred.");
+      setStatus("Message sent ✅");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err: any) {
+      setStatus(`Failed to send: ${err.message || err}`);
+    } finally {
+      setLoading(false);
     }
-  };
+  }
 
   return (
-    <>
-      <Script
-        src="https://www.google.com/recaptcha/api.js?render=6LfsjGwrAAAAAJCiAg61vsZFbtZwwlcFhx5vnl-V"
-        strategy="afterInteractive"
-        async
-        defer
+    <form onSubmit={onSubmit} className="max-w-xl mx-auto space-y-4">
+      <input
+        className="w-full p-3 rounded bg-neutral-900"
+        placeholder="Name"
+        value={form.name}
+        onChange={(e) => setForm((v) => ({ ...v, name: e.target.value }))}
+        required
       />
-      <form onSubmit={handleSubmit} className="space-y-6 max-w-xl mx-auto">
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Your Name"
-          required
-          className="w-full p-3 rounded bg-black text-white border border-gray-600"
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Your Email"
-          required
-          className="w-full p-3 rounded bg-black text-white border border-gray-600"
-        />
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="Your Message"
-          required
-          rows={6}
-          className="w-full p-3 rounded bg-black text-white border border-gray-600"
-        />
-        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-          Send Message
-        </Button>
-        {status && <p className="text-sm text-center mt-2">{status}</p>}
-      </form>
-    </>
+      <input
+        className="w-full p-3 rounded bg-neutral-900"
+        placeholder="Email"
+        type="email"
+        value={form.email}
+        onChange={(e) => setForm((v) => ({ ...v, email: e.target.value }))}
+        required
+      />
+      <textarea
+        className="w-full p-3 rounded bg-neutral-900 min-h-[140px]"
+        placeholder="Message"
+        value={form.message}
+        onChange={(e) => setForm((v) => ({ ...v, message: e.target.value }))}
+        required
+      />
+      <button disabled={loading} className="w-full p-3 rounded bg-blue-600">
+        {loading ? "Sending..." : "Send Message"}
+      </button>
+      {status && <p className="text-sm opacity-80">{status}</p>}
+    </form>
   );
 }
