@@ -1,8 +1,19 @@
 // lib/recaptcha.ts
-export async function ensureRecaptchaReady(timeoutMs = 8000) {
-  const start = Date.now();
-  while (!((window as any).__greReady && (window as any).grecaptcha?.execute)) {
-    if (Date.now() - start > timeoutMs) throw new Error("reCAPTCHA not ready");
-    await new Promise(r => setTimeout(r, 100));
-  }
+export function getRecaptchaToken(action: string, timeoutMs = 10000): Promise<string> {
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!;
+  return new Promise((resolve, reject) => {
+    const start = Date.now();
+    const tick = () => {
+      const g = (window as any).grecaptcha;
+      if (g?.ready && g?.execute) {
+        g.ready(() => {
+          g.execute(siteKey, { action }).then(resolve).catch(reject);
+        });
+        return;
+      }
+      if (Date.now() - start > timeoutMs) return reject(new Error("reCAPTCHA not ready"));
+      setTimeout(tick, 100);
+    };
+    tick();
+  });
 }
