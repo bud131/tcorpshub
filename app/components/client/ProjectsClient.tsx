@@ -1,11 +1,59 @@
+// components/client/ProjectsClient.tsx
 "use client";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Background from "@/components/Background";
 
-
 export default function ProjectsPage() {
+  const projects = [
+    {
+      name: "Web3Crystals.io 💎",
+      description:
+        "Physical printed crystals backed by NFTs & crypto utility. Each purchase includes unique benefits like airdrops, NFT locking, and exclusive discounts.",
+      links: [
+        { label: "Start your journey here", href: "https://web3crystals.io" },
+        { label: "info@web3crystals.io", href: "mailto:info@web3crystals.io" },
+      ],
+      image: "web3logo.gif",
+    },
+    {
+      name: "NextGen Reality 🎮",
+      description:
+        "Psychological tricks, mind hacks, and engaging content in YouTube Shorts & TikTok!",
+      links: [
+        {
+          label: "@NextGenRealityOfficial",
+          href: "https://www.youtube.com/@NextGenRealityOfficial/",
+        },
+        {
+          label: "@nextgen_reality_official",
+          href: "https://www.tiktok.com/@nextgen_reality_official",
+        },
+      ],
+      image: "NextGenReality.png",
+    },
+    // ✅ New: infectedr.com block (inserted before Cryptopia)
+    {
+      name: "Infected Robloxia (infectedr.com) ⚙️",
+      description:
+        "Roblox developer, animator, movie maker, voice actor and freestyle rapper — watch videos, join Discord, and support the work on the official site.",
+      links: [
+        { label: "Visit infectedr.com", href: "https://infectedr.com" },
+        // Add more when ready (e.g., Discord/YouTube/support pages)
+      ],
+      // Place a square-ish image in /public, e.g. infectedr_og.jpg or infectedr.png
+      image: "infectedr.png",
+    },
+    {
+      name: "Cryptopia 🌐",
+      description:
+        "An immersive blockchain-powered metaverse where players explore, trade, and shape the future of a decentralized society. Build, vote, and engage in a fully tokenized economy.",
+      links: [{ label: "Start your journey here", href: "https://cryptopia.com/" }],
+      image: "cryptopia_l.png",
+    },
+  ];
+
   return (
     <>
       <Background />
@@ -16,33 +64,15 @@ export default function ProjectsPage() {
         </h1>
 
         <section className="max-w-4xl mx-auto space-y-12">
-          {[{
-            name: "Web3Crystals.io 💎",
-            description: "Physical printed crystals backed by NFTs & crypto utility. Each purchase includes unique benefits like airdrops, NFT locking, and exclusive discounts.",
-            links: [
-              { label: "Start your journey here", href: "https://web3crystals.io" },
-              { label: "info@web3crystals.io", href: "mailto:info@web3crystals.io" }
-            ],
-            image: "web3logo.gif"
-          }, {
-            name: "NextGen Reality 🎮",
-            description: "Psychological tricks, mind hacks, and engaging content in YouTube Shorts & TikTok!",
-            links: [
-              { label: "@NextGenRealityOfficial", href: "https://www.youtube.com/@NextGenRealityOfficial/" },
-              { label: "@nextgen_reality_official", href: "https://www.tiktok.com/@nextgen_reality_official" }
-            ],
-            image: "NextGenReality.png"
-          }, {
-            name: "Cryptopia 🌐",
-            description: "An immersive blockchain-powered metaverse where players explore, trade, and shape the future of a decentralized society. Build, vote, and engage in a fully tokenized economy.",
-            links: [
-              { label: "Start your journey here", href: "https://cryptopia.com/" }
-            ],
-            image: "cryptopia_l.png"
-          }].map((project, i) => (
-            <div key={i} className="flex flex-col sm:flex-row items-center justify-between bg-white/5 p-6 rounded-lg border border-white/10">
+          {projects.map((project, i) => (
+            <div
+              key={i}
+              className="flex flex-col sm:flex-row items-center justify-between bg-white/5 p-6 rounded-lg border border-white/10"
+            >
               <div className="flex-1">
-                <h2 className="text-2xl font-semibold text-blue-400 mb-2">{project.name}</h2>
+                <h2 className="text-2xl font-semibold text-blue-400 mb-2">
+                  {project.name}
+                </h2>
                 <p className="text-gray-300 mb-2">{project.description}</p>
                 {project.links.map((link, j) => (
                   <p key={j} className="text-gray-300">
