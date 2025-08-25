@@ -33,9 +33,9 @@ export default function ProjectsPage() {
       ],
       image: "NextGenReality.png",
     },
-    // ✅ New: infectedr.com block (inserted before Cryptopia)
+    
     {
-      name: "Infected Robloxia (infectedr.com) ⚙️",
+      name: "Infected Robloxia ⚙️",
       description:
         "Roblox developer, animator, movie maker, voice actor and freestyle rapper — watch videos, join Discord, and support the work on the official site.",
       links: [
