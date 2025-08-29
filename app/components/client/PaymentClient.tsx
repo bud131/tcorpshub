@@ -41,7 +41,7 @@ function CheckoutForm({ amount }: { amount: number }) {
     if (result.error) {
       alert(`Payment failed: ${result.error.message}`);
     } else if (result.paymentIntent?.status === "succeeded") {
-      alert("✅ Πληρωμή ολοκληρώθηκε!");
+      alert("✅ Payment succeeded!");
     }
   };
 
@@ -65,7 +65,7 @@ function CheckoutForm({ amount }: { amount: number }) {
         type="submit"
         className="w-full max-w-sm bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200 shadow"
       >
-        Πληρωμή
+        Complete Payment
       </button>
     </form>
   );
