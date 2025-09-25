@@ -78,109 +78,59 @@ export default function PaymentPage() {
   const [copied, setCopied] = useState(false);
 
   const qrMap: Record<string, string> = {
-    bitcoin: "Bitcoin (BTC) on Bitcoin Network.png",
-    ethereum: "Ethereum (ETH) on Ethereum Network.png",
-    arbitrum: "Arbitrum One (ETH) on Arbitrum One Network.png",
-    optimism: "Optimistic Ethereum (ETH) on Optimistic Ethereum Network.png",
-    avalanche: "Avalanche C-Chain (AVAX) on Avalanche C-Chain Network.png",
-    bnb: "BNB Smart Chain (BNB) on BNB Smart Chain Network.png",
-    cronos: "Cronos (CRO) on Cronos EVM Network.png",
-    solana: "Solana (SOL) on Solana Network.png",
-    polygon: "Polygon (MATIC) on Solana Network.png",
-    litecoin: "Litecoin (LTC) on Litecoin Network.png",
-    tron: "Tron (TRX) on Tron Network.png",
-    xrp: "XRP Ledger (XRP) on XRP Ledger Network.png",
-    doge: "Dogecoin (DOGE) on Dogecoin Network.png",
-    cardano: "Cardano (ADA) on Cardano Network.png",
+  bitcoin: "btc.png",
+  ethereum: "eth.png",
+  bnb:      "bnb.png",
+  arbitrum: "Arb.png",
+  optimism: "opt.png",
+  solana: "sol.png",
+  tron:     "tron.png",
   };
 
   const networks = [
-    {
-      key: "bitcoin",
-      name: "Bitcoin (Native)",
-      tokensDescription: "BTC only.",
-      address: "bc1qwk7hycrd3kavlvxv4w3mafd500gf8kpmrp0d83",
-    },
-    {
-      key: "ethereum",
-      name: "Ethereum (ERC-20)",
-      tokensDescription: "ETH, USDT, USDC, DAI, LINK, etc.",
-      address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
-    },
-    {
-      key: "bnb",
-      name: "BNB Smart Chain (BEP-20)",
-      tokensDescription: "BNB, USDT, USDC, BUSD, CAKE, etc.",
-      address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
-    },
-    {
-      key: "arbitrum",
-      name: "Arbitrum One (ERC-20)",
-      tokensDescription: "ETH, ARB, USDT, USDC, etc.",
-      address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
-    },
-    {
-      key: "optimism",
-      name: "Optimism (ERC-20)",
-      tokensDescription: "ETH, OP, USDT, USDC, etc.",
-      address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
-    },
-    {
-      key: "avalanche",
-      name: "Avalanche C-Chain (ERC-20)",
-      tokensDescription: "AVAX, USDT, USDC, etc.",
-      address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
-    },
-    {
-      key: "cronos",
-      name: "Cronos EVM (CRC-20)",
-      tokensDescription: "CRO, USDT, USDC, etc.",
-      address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
-    },
-    {
-      key: "solana",
-      name: "Solana (SPL)",
-      tokensDescription: "SOL, USDT, USDC, etc.",
-      address: "HtW5f1qbVUK1dgCaLhWCv1wUVsH4H3jdrhchZpeg9xZg",
-    },
-    {
-      key: "polygon",
-      name: "Polygon (ERC-20)",
-      tokensDescription: "MATIC, USDT, USDC, etc.",
-      address: "BkaqB1nqzDMnnsMXR3RbKfPyW2A7BX6GkygSGsQZtELw",
-    },
-    {
-      key: "litecoin",
-      name: "Litecoin (Native)",
-      tokensDescription: "LTC only.",
-      address: "ltc1qypjp4lw5ptr2sfdfgnrd92t77nwa0l8sttut8j",
-    },
-    {
-      key: "tron",
-      name: "Tron (TRC-20)",
-      tokensDescription: "TRX, USDT, USDC, etc.",
-      address: "TTQ2n8BUPgsCo9g6mtDVZ7JACyDyGiiFwJ",
-    },
-    {
-      key: "xrp",
-      name: "XRP Ledger (Native)",
-      tokensDescription: "XRP only.",
-      address: "rEYoAhpdUEW1ybr3zxSZndeL6rLJUjAADE",
-    },
-    {
-      key: "doge",
-      name: "Dogecoin (Native)",
-      tokensDescription: "DOGE only.",
-      address: "DJog916RCPsC4PeRsBTxpHMLq1jaTzYs5c",
-    },
-    {
-      key: "cardano",
-      name: "Cardano (ADA Native)",
-      tokensDescription: "ADA only.",
-      address:
-        "addr1qx9kfqppkpeykggz7a6vsh4w00v7srvhr6p25rq9x0pwn57lwzmqg206tjlwxqeslllgkdzxhdnle5truegs98ds68msye4dpp",
-    },
-  ];
+  {
+    key: "bitcoin",
+    name: "Bitcoin (Native)",
+    tokensDescription: "BTC only.",
+    address: "bc1qldhx02mqxmstddwc58agjq7u05egwx9qkdqnhw",
+  },
+  {
+    key: "ethereum",
+    name: "Ethereum (ERC-20)",
+    tokensDescription: "ETH, USDT, USDC, DAI, LINK, etc.",
+    address: "0xff79ABc8986210a352C2e3ea10Cb67e07d2Ce04f",
+  },
+  {
+    key: "bnb",
+    name: "BNB Smart Chain (BEP-20)",
+    tokensDescription: "BNB, USDT, USDC, BUSD, CAKE, etc.",
+    address: "0xff79ABc8986210a352C2e3ea10Cb67e07d2Ce04f",
+  },
+  {
+    key: "arbitrum",
+    name: "Arbitrum One (ERC-20)",
+    tokensDescription: "ETH, ARB, USDT, USDC, etc.",
+    address: "0xff79ABc8986210a352C2e3ea10Cb67e07d2Ce04f",
+  },
+  {
+    key: "optimism",
+    name: "Optimism (ERC-20)",
+    tokensDescription: "ETH, OP, USDT, USDC, etc.",
+    address: "0xff79ABc8986210a352C2e3ea10Cb67e07d2Ce04f",
+  },
+  {
+    key: "solana",
+    name: "Solana (SPL)",
+    tokensDescription: "SOL, USDT, USDC, etc.",
+    address: "BkaqB1nqzDMnnsMXR3RbKfPyW2A7BX6GkygSGsQZtELw",
+  },
+  {
+    key: "tron",
+    name: "Tron (TRC-20)",
+    tokensDescription: "TRX, USDT, USDC, etc.",
+    address: "TSUoyLVPQP9hZrEiUvcPK7fQVfD6TNk5ca",
+  },
+];
 
   const currentNetwork = networks.find((n) => n.key === selectedNetwork);
 
