@@ -123,7 +123,7 @@ export default function PaymentPage() {
     key: "solana",
     name: "Solana (SPL)",
     tokensDescription: "SOL, USDT, USDC, etc.",
-    address: "HtW5f1qbVUK1dgCaLhWCv1wUVsH4H3jdrhchZpeg9xZg",
+    address: "BkaqB1nqzDMnnsMXR3RbKfPyW2A7BX6GkygSGsQZtELw",
   },
       {
   key: "polygon",
