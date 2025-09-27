@@ -78,57 +78,64 @@ export default function PaymentPage() {
   const [copied, setCopied] = useState(false);
 
   const qrMap: Record<string, string> = {
-  bitcoin: "btc.png",
+  bitcoin:  "btc.png",
   ethereum: "eth.png",
   bnb:      "bnb.png",
   arbitrum: "Arb.png",
   optimism: "opt.png",
-  solana: "sol.png",
+  solana:   "sol.png",
+  polygon:  "polygon.png",
   tron:     "tron.png",
-  };
+};
 
   const networks = [
   {
     key: "bitcoin",
     name: "Bitcoin (Native)",
     tokensDescription: "BTC only.",
-    address: "bc1qldhx02mqxmstddwc58agjq7u05egwx9qkdqnhw",
+    address: "bc1qwk7hycrd3kavlvxv4w3mafd500gf8kpmrp0d83",
   },
   {
     key: "ethereum",
     name: "Ethereum (ERC-20)",
     tokensDescription: "ETH, USDT, USDC, DAI, LINK, etc.",
-    address: "0xff79ABc8986210a352C2e3ea10Cb67e07d2Ce04f",
+    address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
   },
   {
     key: "bnb",
     name: "BNB Smart Chain (BEP-20)",
     tokensDescription: "BNB, USDT, USDC, BUSD, CAKE, etc.",
-    address: "0xff79ABc8986210a352C2e3ea10Cb67e07d2Ce04f",
+    address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
   },
   {
     key: "arbitrum",
     name: "Arbitrum One (ERC-20)",
     tokensDescription: "ETH, ARB, USDT, USDC, etc.",
-    address: "0xff79ABc8986210a352C2e3ea10Cb67e07d2Ce04f",
+    address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
   },
   {
     key: "optimism",
     name: "Optimism (ERC-20)",
     tokensDescription: "ETH, OP, USDT, USDC, etc.",
-    address: "0xff79ABc8986210a352C2e3ea10Cb67e07d2Ce04f",
+    address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
   },
   {
     key: "solana",
     name: "Solana (SPL)",
     tokensDescription: "SOL, USDT, USDC, etc.",
-    address: "BkaqB1nqzDMnnsMXR3RbKfPyW2A7BX6GkygSGsQZtELw",
+    address: "HtW5f1qbVUK1dgCaLhWCv1wUVsH4H3jdrhchZpeg9xZg",
+  },
+      {
+  key: "polygon",
+  name: "Polygon (POL)",
+  tokensDescription: "POL (ex-MATIC), USDT, USDC, DAI, AAVE, SAND, QUICK, etc.",
+  address: "0x4dcE868911415b4E70E2E7F2f96D21Df9DBC4a27",
   },
   {
     key: "tron",
     name: "Tron (TRC-20)",
     tokensDescription: "TRX, USDT, USDC, etc.",
-    address: "TSUoyLVPQP9hZrEiUvcPK7fQVfD6TNk5ca",
+    address: "TTQ2n8BUPgsCo9g6mtDVZ7JACyDyGiiFwJ",
   },
 ];
 
