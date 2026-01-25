@@ -15,10 +15,11 @@ export default function Header() {
         {/* Logo */}
         <Link href="/">
           <Image
-            src="/logo.gif"
+            src="/tclogo.png"
             alt="Tcorps Logo"
             width={120}
             height={40}
+			priority
             className="object-contain"
           />
         </Link>
